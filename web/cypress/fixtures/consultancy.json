@@ -1,0 +1,44 @@
+{
+  "personal": {
+    "name": "Joao Andrade",
+    "email": "joao@teste.com",
+    "phone": "11 99999-1000",
+    "consultancyType": "Individual",
+    "personType": "cpf",
+    "document": "23125530075",
+    "discoveryChannels": [
+      "Instagram",
+      "LinkedIn",
+      "Udemy",
+      "YouTube",
+      "Indicação de Amigo"
+    ],
+    "file": "./cypress/fixtures/do.pdf",
+    "description": "Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis.",
+    "technologies": [
+      "Selenium",
+      "WebDriverIO",
+      "Playwright",
+      "Robot Framework",
+      "Cypress"
+    ],
+    "terms": true
+  },
+  "company": {
+    "name": "Joao Andrade",
+    "email": "joao@teste.com",
+    "phone": "11 99999-1000",
+    "consultancyType": "In Company",
+    "personType": "cnpj",
+    "document": "20851468000105",
+    "discoveryChannels": [
+      "LinkedIn"
+    ],
+    "file": "./cypress/fixtures/do.pdf",
+    "description": "Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis.",
+    "technologies": [
+      "Cypress"
+    ],
+    "terms": true
+  }
+}
