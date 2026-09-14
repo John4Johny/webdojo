@@ -1,41 +1,69 @@
-# Testes automatizados — Webdojo
+# Automação de Testes E2E — Webdojo
 
-Este projeto contém os testes automatizados end-to-end da aplicação **Webdojo**, utilizando [Cypress](https://www.cypress.io/). A aplicação e os testes ficam no mesmo repositório.
+## Visão geral
+
+Este repositório reúne a aplicação **Webdojo** e sua suíte de testes automatizados end-to-end (E2E), implementada com [Cypress](https://www.cypress.io/). Os testes validam a aplicação pela perspectiva do usuário, exercitando fluxos funcionais no navegador.
+
+Como a aplicação e os testes compartilham o mesmo repositório, o servidor da Webdojo deve estar ativo antes da execução da suíte.
+
+## Tecnologias
+
+| Tecnologia | Finalidade |
+| --- | --- |
+| Node.js | Ambiente de execução dos scripts do projeto. |
+| npm | Gerenciamento de dependências e execução dos scripts. |
+| Cypress | Framework para automação de testes end-to-end. |
 
 ## Pré-requisitos
 
-- Node.js instalado (recomenda-se a versão LTS);
-- npm disponível no terminal;
-- Dependências do projeto instaladas.
+Antes de iniciar, verifique se o ambiente possui:
+
+- Node.js em versão LTS;
+- npm instalado e acessível pelo terminal;
+- dependências do projeto instaladas.
 
 ```bash
 npm install
 ```
 
-## Executando a aplicação
+## Inicialização da aplicação
 
-Antes de executar os testes, inicie a aplicação Webdojo em um terminal separado:
+Em um terminal, na raiz do repositório, inicie a Webdojo:
 
 ```bash
 npm run dev
 ```
 
-A aplicação será disponibilizada na porta `3000`.
+O comando disponibiliza a aplicação na porta `3000`.
 
-> Mantenha esse comando em execução durante os testes Cypress.
+> O servidor deve permanecer em execução durante os testes. Abra outro terminal, também na raiz do projeto, para executar os comandos Cypress.
 
-## Executando os testes
+## Execução dos testes
 
-Com a aplicação em execução, utilize os comandos abaixo conforme o cenário desejado.
+| Objetivo | Comando | Resultado |
+| --- | --- | --- |
+| Executar toda a suíte | `npm test` | Executa os testes em modo headless com viewport de `1440 × 900`. |
+| Executar em modo interativo | `npm run test:ui` | Abre o Cypress Runner para seleção, inspeção e depuração dos cenários. |
+| Validar o login em desktop | `npm run test:login` | Executa `cypress/e2e/login.cy.js` com viewport de `1440 × 900`. |
+| Validar o login em mobile | `npm run test:login:mobile` | Executa `cypress/e2e/login.cy.js` com viewport de `414 × 896`. |
 
-| Comando | Descrição |
-| --- | --- |
-| `npm test` | Executa todos os testes em modo headless, com viewport de 1440 × 900. |
-| `npm run test:ui` | Abre a interface interativa do Cypress para selecionar e acompanhar os testes. |
-| `npm run test:login` | Executa somente o teste de login em viewport de 1440 × 900. |
-| `npm run test:login:mobile` | Executa somente o teste de login simulando um dispositivo móvel, com viewport de 414 × 896. |
+### Exemplo de fluxo local
 
-## Scripts disponíveis
+```bash
+# Terminal 1 — aplicação Webdojo
+npm run dev
+
+# Terminal 2 — suíte de testes completa
+npm test
+```
+
+Para analisar um cenário durante o desenvolvimento, substitua o segundo comando por:
+
+```bash
+npm run test:ui
+```
+
+## Scripts do projeto
 
 ```json
 {
@@ -49,16 +77,16 @@ Com a aplicação em execução, utilize os comandos abaixo conforme o cenário 
 }
 ```
 
-## Estrutura do projeto Cypress
+## Organização da suíte
 
 ```text
 cypress/
-├── e2e/                         # Especificações dos testes end-to-end
-├── fixtures/                    # Dados e arquivos usados pelos testes
+├── e2e/                         # Especificações dos cenários E2E
+├── fixtures/                    # Massa de dados e arquivos estáticos
 │   ├── cep.json
 │   ├── consultancy.json
 │   └── do.pdf
-└── support/                     # Comandos e funções de apoio reutilizáveis
+└── support/                     # Recursos compartilhados entre os testes
     ├── actions/
     │   └── consultancy.actions.js
     ├── commands.js
@@ -66,22 +94,29 @@ cypress/
     └── utils.js
 ```
 
-### Diretórios e arquivos de apoio
+| Caminho | Responsabilidade |
+| --- | --- |
+| `cypress/e2e/` | Armazena as especificações dos testes E2E, como `login.cy.js`. |
+| `cypress/fixtures/` | Centraliza dados previsíveis e arquivos usados pelos cenários de teste. |
+| `cypress/support/actions/` | Organiza ações de domínio reutilizáveis, como as relacionadas a consultorias. |
+| `cypress/support/commands.js` | Declara comandos customizados do Cypress. |
+| `cypress/support/e2e.js` | Reúne configurações carregadas antes das especificações E2E. |
+| `cypress/support/utils.js` | Disponibiliza funções utilitárias compartilhadas. |
 
-- `cypress/e2e/`: concentra os arquivos de teste, como `login.cy.js`.
-- `cypress/fixtures/`: armazena dados estáticos e arquivos utilizados durante os cenários de teste.
-- `cypress/support/actions/`: reúne ações reutilizáveis relacionadas a funcionalidades da aplicação, como consultorias.
-- `cypress/support/commands.js`: define comandos customizados do Cypress.
-- `cypress/support/e2e.js`: arquivo carregado antes da execução dos testes end-to-end; indicado para configurações globais.
-- `cypress/support/utils.js`: contém funções utilitárias compartilhadas entre os testes.
+## Cobertura de viewport
 
-## Fluxo sugerido
+O cenário de login é executável em dois contextos de viewport:
 
-1. Instale as dependências com `npm install`.
-2. Em um terminal, execute `npm run dev` para iniciar a Webdojo.
-3. Em outro terminal, execute o script Cypress apropriado.
-4. Para desenvolver ou depurar um cenário, prefira `npm run test:ui`.
+| Contexto | Dimensões | Script |
+| --- | --- | --- |
+| Desktop | `1440 × 900` | `npm run test:login` |
+| Mobile | `414 × 896` | `npm run test:login:mobile` |
 
-## Observação sobre responsividade
+Essa separação permite validar o fluxo de autenticação tanto em resolução de desktop quanto em uma dimensão representativa de dispositivo móvel.
 
-Os scripts de login validam a mesma especificação em dois tamanhos de tela: desktop (`1440 × 900`) e mobile (`414 × 896`). Isso permite verificar o comportamento do fluxo de autenticação em contextos de uso distintos.
+## Boas práticas de manutenção
+
+- Mantenha as especificações em `cypress/e2e/` focadas no comportamento a ser validado.
+- Centralize dados reutilizáveis em `fixtures/` para reduzir duplicação e facilitar a manutenção.
+- Extraia passos repetidos para `support/actions/`, comandos customizados ou utilitários.
+- Ao alterar uma funcionalidade, execute pelo menos o cenário diretamente relacionado antes de executar a suíte completa.
